@@ -6,16 +6,19 @@ import (
 )
 
 func main() {
-	input()
+	val1 := inputVal1()
+	num := inputCount(val1)
+	inputVal2(val1, num)
+
 }
-func input() {
-	var valChange, valTrans string
-	var valCount string
-	var valNum float32
+func inputVal1() string {
+	var valChange string
+
 	fmt.Println("Введите валюту : ")
 	fmt.Println("RUB")
 	fmt.Println("USD")
 	fmt.Println("EUR")
+
 	for {
 		fmt.Scan(&valChange)
 		if valChange == "RUB" || valChange == "USD" || valChange == "EUR" {
@@ -32,19 +35,28 @@ func input() {
 	case valChange == "EUR":
 		fmt.Println("EUR")
 	}
-
+	return valChange
+}
+func inputCount(valChange string) float32 {
+	var valCount string
+	var num float32
 	fmt.Println("Введите количество вашей валюты")
 	for {
 		fmt.Scan(&valCount)
 		valCheck, err := strconv.ParseFloat(valCount, 32)
 		if err == nil {
-			valNum = float32(valCheck)
+			num = float32(valCheck)
+			fmt.Println(valCheck)
 			break
 		} else {
 			fmt.Println("Некорректный ввод")
 		}
 	}
 	fmt.Println("You have: ", valCount, valChange)
+	return num
+}
+func inputVal2(valChange string, valNum float32) {
+	var valTrans string
 	fmt.Println("В какую валюту вы хотите перевести свои деньги?")
 	if valChange != "RUB" {
 		fmt.Println("RUB")
@@ -55,7 +67,6 @@ func input() {
 	if valChange != "EUR" {
 		fmt.Println("EUR")
 	}
-
 	for {
 		fmt.Scan(&valTrans)
 		if valTrans == "RUB" || valTrans == "USD" || valTrans == "EUR" {
