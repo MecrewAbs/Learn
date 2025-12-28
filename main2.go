@@ -57,7 +57,7 @@ func sum(slc []int) {
 func med(slc []int) {
 	sort.Ints(slc)
 	if len(slc)%2 == 0 {
-		fmt.Println(len(slc)/2, len(slc)/2+1)
+		fmt.Println(float64((len(slc)/2 + len(slc)/2 + 1) / 2))
 	} else {
 		fmt.Println(len(slc)/2 + 1)
 	}
