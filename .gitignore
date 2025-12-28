@@ -1,0 +1,5 @@
+gitignore
+# Исполняемые файлы
+*.exe
+app1.exe
+app2.exe
