@@ -12,10 +12,12 @@ func input() {
 	var valChange, valTrans string
 	var valCount string
 	var valNum float32
-	valval := map[string]string{
-		"RUB": "RUB",
-		"USD": "USD",
-		"EUR": "EUR"}
+
+	rates := map[string]map[string]float32{
+		"RUB": {"USD": 0.0125, "EUR": 0.0111}, // 1/80 и 1/90
+		"USD": {"RUB": 80.0, "EUR": 0.89},
+		"EUR": {"USD": 1.124, "RUB": 90.0}, // 1/0.89
+	}
 
 	fmt.Println("Введите валюту : ")
 	fmt.Println("RUB")
@@ -30,7 +32,6 @@ func input() {
 			fmt.Println("Попробуйте ещё раз")
 		}
 	}
-	fmt.Println(valval[valChange])
 
 	fmt.Println("Введите количество вашей валюты")
 	for {
@@ -46,11 +47,6 @@ func input() {
 	fmt.Println("You have: ", valCount, valChange)
 	fmt.Println("В какую валюту вы хотите перевести свои деньги?")
 
-	for key, val := range valval {
-		if valChange != valval[key] {
-			fmt.Println(val)
-		}
-	}
 	for {
 		fmt.Scan(&valTrans)
 		if valTrans == "RUB" || valTrans == "USD" || valTrans == "EUR" {
@@ -59,19 +55,7 @@ func input() {
 			fmt.Println("Некорректное значение")
 		}
 	}
+	result := valNum * rates[valChange][valTrans]
+	fmt.Println(result, valTrans)
 
-	switch {
-	case valChange == "RUB" && valTrans == "USD":
-		fmt.Println(valNum/80, " USD")
-	case valChange == "RUB" && valTrans == "EUR":
-		fmt.Println(valNum/90, " EUR")
-	case valChange == "USD" && valTrans == "RUB":
-		fmt.Println(valNum*80, " RUB")
-	case valChange == "USD" && valTrans == "EUR":
-		fmt.Println(valNum*0.89, "EUR")
-	case valChange == "EUR" && valTrans == "USD":
-		fmt.Println(valNum/0.89, "USD")
-	case valChange == "EUR" && valTrans == "RUB":
-		fmt.Println(valNum*90, "RUB")
-	}
 }
