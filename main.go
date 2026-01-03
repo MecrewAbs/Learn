@@ -13,10 +13,26 @@ func input() {
 	var valCount string
 	var valNum float32
 
-	rates := map[string]map[string]float32{
+	/*rates := map[string]map[string]float32{
 		"RUB": {"USD": 0.0125, "EUR": 0.0111}, // 1/80 и 1/90
 		"USD": {"RUB": 80.0, "EUR": 0.89},
 		"EUR": {"USD": 1.124, "RUB": 90.0}, // 1/0.89
+	}*/
+
+	var ratesP *map[string]map[string]float32
+	rates := make(map[string]map[string]float32)
+	ratesP = &rates
+	(*ratesP)["RUB"] = map[string]float32{
+		"USD": 0.0125,
+		"EUR": 0.0111,
+	}
+	(*ratesP)["USD"] = map[string]float32{
+		"RUB": 80.0,
+		"EUR": 0.89,
+	}
+	(*ratesP)["EUR"] = map[string]float32{
+		"USD": 1.124,
+		"RUB": 90.0,
 	}
 
 	fmt.Println("Введите валюту : ")
@@ -55,7 +71,7 @@ func input() {
 			fmt.Println("Некорректное значение")
 		}
 	}
-	result := valNum * rates[valChange][valTrans]
+	result := valNum * (*ratesP)[valChange][valTrans]
 	fmt.Println(result, valTrans)
 
 }
