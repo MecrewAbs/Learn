@@ -2,76 +2,46 @@ package main
 
 import (
 	"fmt"
-	"strconv"
+	"math/rand/v2"
+	"time"
 )
 
 func main() {
-	input()
+	bin := NewBin("first-bin", false)
+	fmt.Printf("Bin has been created: ID=%s, Name=%s, Private=%t, CreatedAt=%v", bin.ID, bin.Name, bin.Private, bin.CreatedAt)
+
+	bins := []Bin{
+		{ID: "1", Name: "Alice", Private: false, CreatedAt: time.Now()},
+		{ID: "2", Name: "Bob", Private: true, CreatedAt: time.Now()},
+	}
+	binList := NewBinList(bins)
+	fmt.Printf("Binlist: %d, elements\n", len(binList))
 }
-func input() {
-	var valChange, valTrans string
-	var valCount string
-	var valNum float32
 
-	/*rates := map[string]map[string]float32{
-		"RUB": {"USD": 0.0125, "EUR": 0.0111}, // 1/80 и 1/90
-		"USD": {"RUB": 80.0, "EUR": 0.89},
-		"EUR": {"USD": 1.124, "RUB": 90.0}, // 1/0.89
-	}*/
+type Bin struct {
+	ID        string    `json:"id"`
+	Private   bool      `json:"private"`
+	CreatedAt time.Time `json:"created_at"`
+	Name      string    `json:"name"`
+}
+type BinList []Bin
 
-	var ratesP *map[string]map[string]float32
-	rates := make(map[string]map[string]float32)
-	ratesP = &rates
-	(*ratesP)["RUB"] = map[string]float32{
-		"USD": 0.0125,
-		"EUR": 0.0111,
+func NewBin(name string, private bool) *Bin {
+	return &Bin{
+		ID:        generateID(),
+		Private:   private,
+		CreatedAt: time.Now(),
+		Name:      name,
 	}
-	(*ratesP)["USD"] = map[string]float32{
-		"RUB": 80.0,
-		"EUR": 0.89,
+}
+func generateID() string {
+	const letters = "abcdefghijklmnopqrstuvwxyz0123456789"
+	b := make([]byte, 8)
+	for i := range b {
+		b[i] = letters[rand.IntN(len(letters))]
 	}
-	(*ratesP)["EUR"] = map[string]float32{
-		"USD": 1.124,
-		"RUB": 90.0,
-	}
-
-	fmt.Println("Введите валюту : ")
-	fmt.Println("RUB")
-	fmt.Println("USD")
-	fmt.Println("EUR")
-
-	for {
-		fmt.Scan(&valChange)
-		if valChange == "RUB" || valChange == "USD" || valChange == "EUR" {
-			break
-		} else {
-			fmt.Println("Попробуйте ещё раз")
-		}
-	}
-
-	fmt.Println("Введите количество вашей валюты")
-	for {
-		fmt.Scan(&valCount)
-		valCheck, err := strconv.ParseFloat(valCount, 32)
-		if err == nil {
-			valNum = float32(valCheck)
-			break
-		} else {
-			fmt.Println("Некорректный ввод")
-		}
-	}
-	fmt.Println("You have: ", valCount, valChange)
-	fmt.Println("В какую валюту вы хотите перевести свои деньги?")
-
-	for {
-		fmt.Scan(&valTrans)
-		if valTrans == "RUB" || valTrans == "USD" || valTrans == "EUR" {
-			break
-		} else {
-			fmt.Println("Некорректное значение")
-		}
-	}
-	result := valNum * (*ratesP)[valChange][valTrans]
-	fmt.Println(result, valTrans)
-
+	return string(b)
+}
+func NewBinList(bins []Bin) BinList {
+	return BinList(bins)
 }
